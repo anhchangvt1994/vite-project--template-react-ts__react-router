@@ -1,11 +1,11 @@
+import 'assets/styles/main.scss'
 import 'assets/styles/tailwind.css'
-import 'assets/styles/app.scss'
+import router from 'config/router/index'
 
 const root = createRoot(document.getElementById('root'))
-const App = React.lazy(() => import('App'))
 
 root.render(
-	<Suspense>
-		<App />
-	</Suspense>
+	<StrictMode>
+		<RouterProvider router={router} />
+	</StrictMode>
 )

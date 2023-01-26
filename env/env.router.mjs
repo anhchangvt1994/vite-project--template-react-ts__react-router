@@ -1,11 +1,23 @@
 export default {
 	prefix: 'router',
 	data: {
-		name: {
-			home_page: 'Home Page',
+		base: {
+			path: '/',
 		},
-		path: {
-			home_page: '/',
+		home: {
+			path: '/',
+		},
+		content: {
+			path: ':slugs',
+		},
+		comment_page: {
+			path: 'comment',
+		},
+		detail: {
+			path: 'detail',
+		},
+		not_found: {
+			path: '*',
 		},
 	},
 }

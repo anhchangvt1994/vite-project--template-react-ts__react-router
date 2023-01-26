@@ -2,10 +2,17 @@ import type { UserConfig } from 'vite'
 import type { RollupAliasOptions } from '@rollup/plugin-alias'
 import NormalSplitChunks from './plugins/NormalSplitChunks'
 
-export default async (): Promise<UserConfig> => {
+export default (): UserConfig => {
 	return {
 		// NOTE - If you want to use Regex please use /...\/([^/]+)/ to split chunks right way
-		plugins: [NormalSplitChunks([/node_modules\/([^/]+)/, /utils\/([^/]+)/])],
+		plugins: [
+			NormalSplitChunks([
+				/node_modules\/([^/]+)/,
+				/utils\/([^/]+)/,
+				/config\/([^/]+)/,
+				/components\/([^/]+)/,
+			]),
+		],
 	}
 }
 
@@ -14,6 +21,9 @@ export const aliasExternal: RollupAliasOptions = {
 		? {
 				react: 'https://esm.sh/react@18.2.0',
 				'react-dom': 'https://esm.sh/react-dom@18.2.0',
+				'react-router-dom': 'https://esm.sh/react-router-dom@6.6.2',
+				'styled-components': 'https://esm.sh/styled-components@5.3.6',
+				polished: 'https://esm.sh/polished@4.2.2',
 		  }
 		: {},
 }

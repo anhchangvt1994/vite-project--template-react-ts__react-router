@@ -4,8 +4,7 @@
 		"dist",
 		"package.json",
 		"package-lock.json",
-		"yarn-lock.json",
-		"config"
+		"yarn-lock.json"
 	],
 	"files": [
 		"config/auto-imports.d.ts",
@@ -38,7 +37,11 @@
 		// NOTE - Setup resolve alias path for project (use case is for auto complete sugestion)
 		"paths": {
 			"@/*": ["../*"],
-			"assets/*": ["assets/*"]
+			"assets/*": ["assets/*"],
+			"config/*": ["config/*"],
+			"pages/*": ["pages/*"],
+			"components/*": ["components/*"],
+			"utils/*": ["utils/*"]
 		},
 
 		// NOTE - Tell typescript compile just only check type

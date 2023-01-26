@@ -1,6 +1,6 @@
 export default {
-  prefix: "general",
-  data: {
-    greeting: "hello vue3.x",
-  },
-};
+	prefix: 'general',
+	data: {
+		greeting: 'React 18',
+	},
+}
