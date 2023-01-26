@@ -54,7 +54,7 @@ export default defineConfig(async ({ mode }) => {
 			...(mode === 'development'
 				? [
 						alias({
-							entries: aliasExternal?.entries,
+							entries: aliasExternal.entries || {},
 						}),
 				  ]
 				: []),
@@ -75,19 +75,15 @@ export default defineConfig(async ({ mode }) => {
 		resolve: {
 			alias: {
 				...resolve.alias,
-				...(mode === 'production'
-					? {
-							...aliasExternal?.entries,
-					  }
-					: {}),
+				...aliasExternal.entries,
 			},
 		},
 		envDir: './config/env',
 		envPrefix: PREFIX_LIST,
 		optimizeDeps: {
-			...(mode === 'production' && aliasExternal
+			...(mode === 'production'
 				? {
-						exclude: Object.keys(aliasExternal),
+						exclude: Object.keys(aliasExternal.entries || {}),
 				  }
 				: {}),
 		},
