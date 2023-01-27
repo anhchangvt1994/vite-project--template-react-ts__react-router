@@ -20,5 +20,4 @@ interface Env {
     STYLE_COLOR_YELLOW:       string;
     STYLE_COLOR_BLUE:         string;
     STYLE_COLOR_WHITE:        string;
-    STYLE_COLOR_TEST:         number;
 }

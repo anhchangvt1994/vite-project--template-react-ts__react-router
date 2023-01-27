@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "cross-env MODE=development vite",
-		"build": "tsc && vite build",
+		"build": "tsc && cross-env MODE=production vite build",
 		"build:esm": "tsc && cross-env MODE=production ESM=true vite build",
 		"preview": "vite preview",
 		"prettier": "tsc --noEmit && prettier src/**/*.{t,j}s{,x} --no-error-on-unmatched-pattern --check",

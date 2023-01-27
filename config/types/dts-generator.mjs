@@ -3,10 +3,6 @@ import {
 	InputData,
 	jsonInputForTargetLanguage,
 } from 'quicktype-core'
-import {
-	ENV_OBJECT_DEFAULT as ImportMeta,
-	promiseENVWriteFileSync,
-} from '../env/env.mjs'
 import { writeFile } from 'fs'
 import { resolve } from 'path'
 
@@ -29,21 +25,29 @@ async function quicktypeJSON(targetLanguage, jsonString) {
 		lang: targetLanguage,
 		rendererOptions: { 'just-types': 'true' },
 	})
-}
+} // quicktypeJSON()
 
-async function main() {
+export const generateDTS = async function (
+	config = {
+		input: undefined,
+		outputDir: undefined,
+		filename: undefined,
+	}
+) {
+	if (
+		typeof config.input !== 'object' ||
+		typeof config.outputDir !== 'string' ||
+		typeof config.filename !== 'string'
+	)
+		return
 	const { lines: tdsGroup } = await quicktypeJSON(
 		'typescript',
-		JSON.stringify({ env: ImportMeta })
+		JSON.stringify({ env: config.input })
 	)
 
 	writeFile(
-		resolve('./config/types', 'ImportMeta.d.ts'),
+		resolve(config.outputDir, config.filename),
 		tdsGroup.join('\n').replace(/export\s/g, ''),
 		function (err) {}
 	)
-}
-
-main()
-
-export { promiseENVWriteFileSync }
+} // generateDTS()

@@ -9,12 +9,24 @@ import tailwind from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
 import EnvironmentPlugin from 'vite-plugin-environment'
 
-import { ENV_OBJECT_DEFAULT } from './config/env/env.mjs'
+import {
+	ENV_OBJECT_DEFAULT,
+	promiseENVWriteFileSync,
+} from './config/env/env.mjs'
+import { generateDTS } from './config/types/dts-generator.mjs'
 
 const resolve = resolveTsconfigPathsToAlias()
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
+	await promiseENVWriteFileSync.then(function () {
+		generateDTS({
+			input: ENV_OBJECT_DEFAULT as any,
+			outputDir: './config/types' as any,
+			filename: 'ImportMeta.d.ts' as any,
+		})
+	})
+
 	const ViteConfigWithMode = await getViteConfigWithMode(mode)
 	const config = (await ViteConfigWithMode?.default?.()) ?? {}
 	const aliasExternal = ViteConfigWithMode?.aliasExternal ?? {}
@@ -89,14 +101,6 @@ export default defineConfig(async ({ mode }) => {
 			postcss: {
 				plugins: [autoprefixer, tailwind('./tailwind.config.cjs')],
 			},
-			preprocessorOptions: {
-				// NOTE - Because we always use styled-components to style instead import .scss
-				// scss: {
-				// 	additionalData: `
-				//     @import "assets/styles/main.scss";
-				//     `,
-				// },
-			},
 		},
 		resolve: {
 			alias: {
@@ -104,8 +108,6 @@ export default defineConfig(async ({ mode }) => {
 				...aliasExternal.entries,
 			},
 		},
-		// envDir: './config/env',
-		// envPrefix: PREFIX_LIST,
 		optimizeDeps: {
 			...(mode === 'production'
 				? {
