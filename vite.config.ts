@@ -6,7 +6,9 @@ import alias from '@rollup/plugin-alias'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import AutoImport from 'unplugin-auto-import/vite'
 import tailwind from 'tailwindcss'
+import tailwindNesting from 'tailwindcss/nesting'
 import autoprefixer from 'autoprefixer'
+import postcssSimpleVars from 'postcss-simple-vars'
 import EnvironmentPlugin from 'vite-plugin-environment'
 
 import {
@@ -99,7 +101,12 @@ export default defineConfig(async ({ mode }) => {
 		],
 		css: {
 			postcss: {
-				plugins: [autoprefixer, tailwind('./tailwind.config.cjs')],
+				plugins: [
+					autoprefixer,
+					postcssSimpleVars,
+					tailwindNesting(),
+					tailwind('./tailwind.config.cjs'),
+				],
 			},
 		},
 		resolve: {

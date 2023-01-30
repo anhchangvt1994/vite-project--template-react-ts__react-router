@@ -101,7 +101,8 @@ html {
 		& body {
 			overflow: hidden;
 		}
-	} // .is-disable-scroll--g2j-basic-modal
+	}
+	/* .is-disable-scroll--g2j-basic-modal */
 }
 
 body {
@@ -110,7 +111,7 @@ body {
 	width: 100%;
 	min-height: 100%;
 	overflow-x: hidden;
-	// line-height: 1.5 !important;
+	/* line-height: 1.5 !important; */
 	background: #f2f2f2;
 	color: $dark-color;
 }

@@ -1,4 +1,4 @@
-import 'assets/styles/main.scss'
+import 'assets/styles/main.css'
 import 'assets/styles/tailwind.css'
 import router from 'config/router/index'
 

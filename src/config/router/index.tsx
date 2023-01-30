@@ -100,7 +100,7 @@ function useProtectRoute(): IValidation {
 		if (protect && typeof protect === 'function') {
 			const protectInfo = protect()
 
-			if (protectInfo) {
+			if (!protectInfo) {
 				protection.status = 302
 				protection.redirect = protectInfo
 				return true
@@ -260,7 +260,7 @@ const routes: RouteObject[] = [
 						},
 					},
 					protect: () => {
-						return false
+						return true
 					},
 				},
 				children: [

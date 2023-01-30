@@ -10,7 +10,6 @@ export default (): UserConfig => {
 				/node_modules\/([^/]+)/,
 				/utils\/([^/]+)/,
 				/config\/([^/]+)/,
-				/components\/([^/]+)/,
 			]),
 		],
 	}
