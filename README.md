@@ -11,7 +11,11 @@ In this repository I will discuss about
 For more information about this project.
 
 1. You can read detail about advanced structure of Vite + React + TS project in this [repository](https://github.com/anhchangvt1994/vite-project--template-react-ts).
+<<<<<<< HEAD
 2. You can read about react-router in [here](https://reactrouter.com/en/main).
+=======
+2. You can read about react-router in [here](https://reactrouter.com/).
+>>>>>>> ab16aed537b023df5055a5c2ae37f350a3136794
 
 ## Table of contents
 
