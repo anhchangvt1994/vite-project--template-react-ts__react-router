@@ -3,15 +3,15 @@
 In this repository I will discuss about
 
 - How to define the basic router information in this project ?
-- How to use lazy loading in vue-router and customize it ?
+- How to use lazy loading in react-router and customize it ?
 - How to use Suspense to create loading page for loading process ?
 - How to validate a route ?
 - How to protect a route ?
 
 For more information about this project.
 
-1. You can read detail about advanced structure of Vite + Vue + TS project in this [repository](https://github.com/anhchangvt1994/vite-project--template-vue-ts).
-2. You can read about vue-router in [here](https://router.vuejs.org/).
+1. You can read detail about advanced structure of Vite + React + TS project in this [repository](https://github.com/anhchangvt1994/vite-project--template-react-ts).
+2. You can read about react-router in [here](https://reactrouter.com/en/main).
 
 ## Table of contents
 
@@ -61,7 +61,7 @@ In this project, you can define router information in two ways
 
 1. Immediacy
 
-This way will fast and easy to define and create a vue-router. See code below.
+This way will fast and easy to define and create a react-router. See code below.
 
 ```jsx
 // config/router/index.jsx
@@ -197,7 +197,7 @@ route init/change > Layout re-render > turn on loading screen > lazy-loading rou
 
 2. Use Suspense
 
-In the first solution, we use router event and vue hook + store to keep flag of on/off the loading screen. It means we have to :
+In the first solution, we use router event and react hook + store to keep flag of on/off the loading screen. It means we have to :
 
 - Define a isLoading flag in store.
 - Define the turn on script in Layout.

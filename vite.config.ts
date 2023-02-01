@@ -104,7 +104,7 @@ export default defineConfig(async ({ mode }) => {
 				plugins: [
 					autoprefixer,
 					postcssSimpleVars,
-					tailwindNesting(),
+					(tailwindNesting as () => any)(),
 					tailwind('./tailwind.config.cjs'),
 				],
 			},
