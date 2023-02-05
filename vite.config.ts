@@ -21,7 +21,7 @@ const resolve = resolveTsconfigPathsToAlias()
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-	await promiseENVWriteFileSync.then(function () {
+	promiseENVWriteFileSync.then(function () {
 		generateDTS({
 			input: ENV_OBJECT_DEFAULT as any,
 			outputDir: './config/types' as any,
@@ -30,7 +30,7 @@ export default defineConfig(async ({ mode }) => {
 	})
 
 	const ViteConfigWithMode = await getViteConfigWithMode(mode)
-	const config = (await ViteConfigWithMode?.default?.()) ?? {}
+	const config = ViteConfigWithMode?.default?.() ?? {}
 	const aliasExternal = ViteConfigWithMode?.aliasExternal ?? {}
 
 	return {

@@ -5,8 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "cross-env MODE=development ts-node --transpiler sucrase/ts-node-plugin ./node_modules/vite/bin/vite.js",
-		"build": "tsc && cross-env MODE=production vite build",
-		"build:esm": "tsc && cross-env MODE=production ESM=true vite build",
+		"build": "tsc && cross-env MODE=production ts-node --transpiler sucrase/ts-node-plugin ./node_modules/vite/bin/vite.js build",
+		"build:esm": "tsc && cross-env MODE=production ESM=true ts-node --transpiler sucrase/ts-node-plugin ./node_modules/vite/bin/vite.js build",
 		"preview": "vite preview",
 		"prettier": "tsc --noEmit && prettier src/**/*.{t,j}s{,x} --no-error-on-unmatched-pattern --check",
 		"lint": "tsc --noEmit && eslint src/**/*.{t,j}s{,x} --no-error-on-unmatched-pattern --ignore-pattern node_modules/",
