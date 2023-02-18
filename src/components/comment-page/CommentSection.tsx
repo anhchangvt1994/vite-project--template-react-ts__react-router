@@ -1,4 +1,3 @@
-import { useRotueInfo } from 'config/router/context/InfoContext'
 import LoadingBoundary from 'utils/LoadingBoundary'
 import CommentLoader from 'components/comment-page/CommentLoader'
 
@@ -7,7 +6,7 @@ const Section = styled.section`
 `
 
 export default function CommentSection({ children }) {
-	const { id } = useRotueInfo()
+	const { id } = useRoute()
 	return (
 		<Section>
 			<LoadingBoundary key={id} fallback={<CommentLoader amount={3} />}>

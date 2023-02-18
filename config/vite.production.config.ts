@@ -9,6 +9,7 @@ export default (): UserConfig => {
 			NormalSplitChunks([
 				/node_modules\/([^/]+)/,
 				/utils\/([^/]+)/,
+				/context\/([^/]+)/,
 				/config\/([^/]+)/,
 			]),
 		],
@@ -20,7 +21,7 @@ export const aliasExternal: RollupAliasOptions = {
 		? {
 				react: 'https://esm.sh/react@18.2.0',
 				'react-dom': 'https://esm.sh/react-dom@18.2.0',
-				'react-router-dom': 'https://esm.sh/react-router-dom@6.6.2',
+				'react-router-dom': 'https://esm.sh/react-router-dom@6.8.1',
 				'styled-components': 'https://esm.sh/styled-components@5.3.6',
 				polished: 'https://esm.sh/polished@4.2.2',
 		  }

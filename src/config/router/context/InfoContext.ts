@@ -6,6 +6,9 @@ export interface IRouteInfo {
 	path: string | undefined
 	fullPath: string | undefined
 	id: string | undefined
+	handle: {
+		reProtect?: () => void
+	}
 }
 
 export interface INavigateInfo {
@@ -32,6 +35,7 @@ const INIT_ROUTE_INFO: IRouteInfo = {
 	path: undefined,
 	fullPath: undefined,
 	id: undefined,
+	handle: {},
 }
 
 const INIT_ROUTE_INIT: IRouteInit = {
@@ -52,7 +56,7 @@ export function useNavigateInfo() {
 
 export const RouteInfoContext = createContext<IRouteInfo>(INIT_ROUTE_INFO)
 
-export function useRotueInfo() {
+export function useRoute() {
 	const routeInfo = useContext(RouteInfoContext)
 	return routeInfo
 }

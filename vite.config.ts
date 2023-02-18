@@ -71,7 +71,12 @@ export default defineConfig(async ({ mode }) => {
 							'createBrowserRouter',
 							'RouterProvider',
 							'BrowserRouter',
+							'useMatches',
+							'generatePath',
 						],
+					},
+					{
+						'config/router/context/InfoContext': ['useRoute'],
 					},
 					{
 						'styled-components': [
@@ -129,6 +134,15 @@ export default defineConfig(async ({ mode }) => {
 					chunkFileNames() {
 						return '[name].[hash].js'
 					},
+				},
+			},
+			minify: 'terser',
+			terserOptions: {
+				format: {
+					comments: false, // It will drop all the console.log statements from the final production build
+				},
+				compress: {
+					drop_console: true, // It will stop showing any console.log statement in dev tools. Make it false if you want to see consoles in production mode.
 				},
 			},
 		},

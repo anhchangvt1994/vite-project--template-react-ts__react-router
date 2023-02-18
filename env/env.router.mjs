@@ -10,11 +10,16 @@ export default {
 		content: {
 			path: ':slugs',
 		},
-		comment_page: {
+		content_comment: {
 			path: 'comment',
 		},
-		detail: {
-			path: 'detail',
+		comment: {
+			path: 'comment/detail',
+			id: 'CommentPage',
+		},
+		login: {
+			path: 'login',
+			id: 'LoginPage',
 		},
 		not_found: {
 			path: '*',
