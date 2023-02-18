@@ -315,7 +315,7 @@ As you can see, in react you must know more than and do more than, to create hel
 <h3 id="protect">Protect on route</h3>
 
 You can protect route by using the [meta options and use beforeEach event to execute it](https://router.vuejs.org/guide/advanced/meta.html#route-meta-fields).
-We will make an example in this project. The PRD for protect route's case have some short description.
+We will make an example in this project. The PRD for protect route's case has some short description.
 
 ```markdown
 // PRD - Comment Page
@@ -342,30 +342,53 @@ If user does not have an account before, user can go to Register Page and regist
 
 You will have many choice to resolve for above PRD
 
-1. Use Vue Hook and Store (easy way to handle but never easy way to manage)
+1. Use React Hook and Store (easy way to handle but never easy way to manage)
 
 - Router load Comment Page finish
 - Comment Page's hook actived
 - Check access rule. If invalid then store current path and redirect to Login Page
 - Login success redirect back to Comment Page path stored and remember clear that store's path variable.
 
-2. Use only vue-router (harder to implement but easy to use and manage)
+2. Use only react-router (harder to implement but easy to use and manage)
 
-- Setup **meta { protect() {... return boolean | string} }** and execute it in **beforeEach** event.
+- Setup **handle { protect() {... return boolean | string} }** and execute it in **RouterProtection** render-less.
 - If **protect()** return invalid, then the system will auto check if Comment Page need to back after success verify, then save the path of Comment Page, and redirect user to Login Page.
 - Login success redirect back to Comment Page.
 
-In this project, I will show you the second solution. Cause we just focus only vue-router in this project, and cause redirect is a part of router's cases, so doesn't need use store and hook to resolve it.
+In this project, I will show you the second solution. Cause we just focus only react-router in this project, and cause redirect is a part of router's cases, so doesn't need use store and hook to resolve it.
 
 I handled for you executing **protect()** in this project, so you just only focus how to use it easy way. See code below
 
 ```javascript
 // router/index
-// Config Protect
+
+// Init RouterProtection with WAITING_VERIFY_ROUTER_ID_LIST
+const WAITING_VERIFY_ROUTER_ID_LIST: { [key: string]: Array<string> } = {
+  [import.meta.env.ROUTER_COMMENT_ID]: [import.meta.env.ROUTER_LOGIN_ID],
+}
+
 {
-  name: import.meta.env.ROUTER_COMMENT_NAME,
+  path: import.meta.env.ROUTER_BASE_PATH,
+  element: (
+    <RouterInit>
+      ...
+        <RouterProtection
+          WatingVerifyRouterIDList={WAITING_VERIFY_ROUTER_ID_LIST}
+        >
+          <Layout />
+        </RouterProtection>
+      ...
+    </RouterInit>
+  ),
+}
+
+// Config Protect method
+{
+  id: import.meta.env.ROUTER_COMMENT_ID,
   path: import.meta.env.ROUTER_COMMENT_PATH,
-  meta: {
+  element: withLazy(() => import('pages/CommentPage')),
+
+  handle: {
     protect(certInfo) {
       /**
        * certInfo param contains
@@ -375,50 +398,37 @@ I handled for you executing **protect()** in this project, so you just only focu
        *    successPath: string
        * }
        */
-      if(!certInfo || !certInfo.email) return import.meta.env.ROUTER_LOGIN_PATH
+      const userInfo = certInfo?.user
+
+      if (!userInfo || !userInfo.email)
+        return import.meta.env.ROUTER_LOGIN_PATH
+
       return true
-    }
-  }
+    },
+  },
 },
 {
-  name: import.meta.env.ROUTER_LOGIN_NAME,
+  id: import.meta.env.ROUTER_LOGIN_ID,
   path: import.meta.env.ROUTER_LOGIN_PATH,
-  meta: {
+  element: withLazy(() => import('pages/LoginPage')),
+  handle: {
     protect(certInfo) {
-      if (certInfo && certInfo.user && certInfo.user.email) {
+      const userInfo = certInfo?.user
+
+      if (userInfo && userInfo.email) {
         // NOTE - If logged > redirect to successPath OR previous path OR Home Page path
-        return (
-          certInfo.successPath ||
-          (
-            certInfo.navigateInfo?.from?.fullPath ??
-            import.meta.env.ROUTER_HOME_PATH
-          )
-        )
+
+        return certInfo.successPath
+          ? certInfo.successPath
+          : certInfo.navigateInfo?.from
+          ? certInfo.navigateInfo.from.fullPath
+          : import.meta.env.ROUTER_HOME_PATH
       }
 
       return true
-    }
-  }
-}
-
-// Init beforeEach adapter
-import beforeEach from './utils/BeforeEachHandler'
-beforeEach.init(
-  router,
-  // NOTE - The second param is a list of waiting back path after verify
-  {}
-)
-
-// Setup list of waiting back path after verify
-import beforeEach from './utils/BeforeEachHandler'
-beforeEach.init(
-  router,
-  // NOTE - The second param is a list of waiting back path after verify
-  // This setup means: the Comment Page will be kept if target route is Login Page, else it will be remove
-  {
-    [import.meta.env.ROUTER_COMMENT_NAME]: [import.meta.env.ROUTER_LOGIN_NAME],
-  }
-)
+    },
+  },
+}, // Login Page
 ```
 
 OK! You finish config protection for router, next I will show you how to use it
@@ -427,14 +437,18 @@ Imagine that you go to Comment Page without login, and the system redirect you t
 In next step, in Login Page you click to login and after that the system has to redirect you go back Comment Page. This requirement are also resolved by the above configuration, but you must re-run the **protect()** in Login Page after login successfully. To do that, I have handled it and gave you a useful in API composition **useRoute** called **reProtect()**, all you need to do is just use it. See code below.
 
 ```javascript
-// LoginPage.vue
+// LoginPage.tsx
+import { useUserInfo } from 'context/UserInfoContext'
+
 const route = useRoute()
+const { userInfo, setUserState } = useUserInfo()
+
 const onClickLogin = () => {
-	userInfo.email = 'abc@gmail.com'
+	setUserState({ ...userInfo, email: 'abc@gmail.com' })
 
 	// NOTE - remember use Optional chaining "?.". Thanks to ES6 useful
 	// Because the system don't know what routes have protect and what routes don't have
-	route.meta.reProtect?.()
+	route.handle.reProtect?.()
 }
 ```
 
@@ -459,11 +473,18 @@ If user click "Logout" label
 I think you have already known what need to do. Correct! just use **reProtect()** after logout. See code below.
 
 ```javascript
-// App.vue
+// Layout.tsx
+import { useUserInfo } from 'context/UserInfoContext'
+
 const route = useRoute()
+const { userState, setUserState } = useUserInfo()
+
 const onClickLogout = () => {
-	userInfo.email = ''
-	route.meta.reProtect?.()
+	setUserState({ ...userState, email: '' })
+
+	// NOTE - remember use Optional chaining "?.". Thanks to ES6 useful
+	// Because the system don't know what routes have protect and what routes don't have
+	route.handle.reProtect?.()
 }
 ```
 
@@ -474,6 +495,5 @@ Finish him! Easy to finish the extensibility requirement, jsut only 1 line of co
 - Makesure your protect function is a **Pure Function**, it make your result will always right.
 - You can customize or implement your logic to handle protect case by using
 
-1. **shim-vue.d.ts** to declare type for **meta field**
-2. **config/router/utils/BeforeEachHandler.ts** to customize or implement logic.
-3. **config/router/index.ts** to init your handler.
+1. **config/router/utils/RouterProtection.ts** to customize or implement logic.
+2. **config/router/index.ts** to init your handler.
