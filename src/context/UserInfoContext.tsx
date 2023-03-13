@@ -15,7 +15,13 @@ export const UserInfoContext = createContext<{
 })
 
 export function UserInfoProvider({ children }) {
-	const [userState, setUserState] = useState(INIT_USER_INFO)
+	const [userState, setUserState] = useReducer(
+		(currentData, updateData) => ({
+			...currentData,
+			...updateData,
+		}),
+		INIT_USER_INFO
+	)
 	const userInfo = userState
 
 	return (

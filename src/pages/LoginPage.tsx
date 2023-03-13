@@ -42,7 +42,7 @@ export default function LoginPage() {
 	const { userInfo, setUserState } = useUserInfo()
 
 	const onClickLogin = () => {
-		setUserState({ ...userInfo, email: 'abc@gmail.com' })
+		setUserState({ email: 'abc@gmail.com' })
 		route.handle.reProtect?.()
 	}
 

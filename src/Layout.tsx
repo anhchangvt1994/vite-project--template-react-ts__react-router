@@ -24,7 +24,7 @@ function Layout() {
 	const { userState, setUserState } = useUserInfo()
 
 	const onClickLogout = () => {
-		setUserState({ ...userState, email: '' })
+		setUserState({ email: '' })
 		route.handle.reProtect?.()
 	}
 
