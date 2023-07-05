@@ -1,7 +1,6 @@
 import path from 'path'
 import fs from 'fs'
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 import alias from '@rollup/plugin-alias'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -21,6 +20,11 @@ const resolve = resolveTsconfigPathsToAlias()
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
+	const react =
+		mode === 'development'
+			? (await import('@vitejs/plugin-react-swc')).default
+			: (await import('@vitejs/plugin-react')).default
+
 	promiseENVWriteFileSync.then(function () {
 		generateDTS({
 			input: ENV_OBJECT_DEFAULT as any,

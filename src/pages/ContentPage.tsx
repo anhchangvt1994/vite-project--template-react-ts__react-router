@@ -47,8 +47,6 @@ export default function ContentPage() {
 		content: string
 	} = response[route.params.id as string]
 
-	console.log(route)
-
 	return (
 		<Page>
 			<div>
