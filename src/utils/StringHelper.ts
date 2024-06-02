@@ -1,5 +1,5 @@
 // DOCS: https://github.com/kvz/locutus/blob/master/src/php/strings/str_replace.js
-function str_replace(search, replace, subject, countObj) {
+function str_replace(search, replace, subject, countObj?) {
 	// eslint-disable-line camelcase
 	//  discuss at: https://locutus.io/php/str_replace/
 	// original by: Kevin van Zonneveld (https://kvz.io)
@@ -363,7 +363,7 @@ const _generateSlug = (
 	intMaxLength = 500,
 	isLowerCase = true
 ) => {
-	return function (strText) {
+	return function (strText: string) {
 		strSlugResult = ''
 		strText = str_replace(arrCharFrom, arrCharEnd, strText)
 		strSlugResult = str_replace(arrCharnonAllowed, '', strText)
@@ -384,7 +384,7 @@ const getSlug = _generateSlug()
 
 const getSlugWithoutDash = _generateSlug('')
 
-const getUnsignedLetters = (strText) => {
+const getUnsignedLetters = (strText: string) => {
 	if (!strText) {
 		return ''
 	}
@@ -392,7 +392,7 @@ const getUnsignedLetters = (strText) => {
 	return str_replace(arrCharFrom, arrCharEnd, strText)
 } // generateUnsignedLetters
 
-const generateTitleCase = (title) => {
+const generateTitleCase = (title: string) => {
 	if (typeof title !== 'string') {
 		return ''
 	}
@@ -404,7 +404,7 @@ const generateTitleCase = (title) => {
 		return title.charAt(0).toUpperCase() + title.substring(1)
 	}
 
-	const tmpWordList = []
+	const tmpWordList: string[] = []
 
 	titleSplitted.forEach(function (word) {
 		if (word) {
@@ -422,7 +422,7 @@ const generateSentenceCase = (title) => {
 
 	const titleSplitted = title.toLowerCase().trim().split(' ')
 
-	const tmpWordList = []
+	const tmpWordList: string[] = []
 
 	titleSplitted.forEach(function (word, idx) {
 		if (!word) {
@@ -441,6 +441,72 @@ const generateSentenceCase = (title) => {
 
 const getCustomSlug = _generateSlug
 
+const encode = (input) => {
+	const chars =
+		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	let output = ''
+	let i = 0
+
+	while (i < input.length) {
+		const a = input.charCodeAt(i++)
+		const b = input.charCodeAt(i++)
+		const c = input.charCodeAt(i++)
+		const index1 = a >> 2
+		const index2 = ((a & 3) << 4) | (b >> 4)
+		const index3 = isNaN(b) ? 64 : ((b & 15) << 2) | (c >> 6)
+		const index4 = isNaN(c) ? 64 : c & 63
+
+		output +=
+			chars.charAt(index1) +
+			chars.charAt(index2) +
+			chars.charAt(index3) +
+			chars.charAt(index4)
+	}
+
+	return output
+} // encode
+
+const decode = (input) => {
+	const chars =
+		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	let output = ''
+	let i = 0
+
+	input = input.replace(/[^A-Za-z0-9\+\/\=]/g, '')
+
+	while (i < input.length) {
+		const index1 = chars.indexOf(input.charAt(i++))
+		const index2 = chars.indexOf(input.charAt(i++))
+		const index3 = chars.indexOf(input.charAt(i++))
+		const index4 = chars.indexOf(input.charAt(i++))
+		const a = (index1 << 2) | (index2 >> 4)
+		const b = ((index2 & 15) << 4) | (index3 >> 2)
+		const c = ((index3 & 3) << 6) | index4
+
+		output += String.fromCharCode(a)
+		if (index3 !== 64) output += String.fromCharCode(b)
+		if (index4 !== 64) output += String.fromCharCode(c)
+	}
+
+	return output
+} // decode
+
+const hashCode = (str: string): string => {
+	// tslint:disable:no-bitwise
+	let hash = 0
+	if (typeof str !== 'string' || str.length === 0) {
+		return String(hash)
+	}
+	for (let i = 0; i < str.length; i++) {
+		const char = str.charCodeAt(i)
+		hash = (hash << 5) - hash + char
+		hash = hash & hash // convert to 32bit integer
+	}
+	hash = hash >>> 0 // convert signed to unsigned https://stackoverflow.com/a/1908655
+	return Number(hash).toString(32).toUpperCase() // make the hash small, convert base10 to base32
+	// tslint:enable:no-bitwise
+}
+
 export {
 	getSlug,
 	getSlugWithoutDash,
@@ -448,4 +514,8 @@ export {
 	getCustomSlug,
 	generateTitleCase,
 	generateSentenceCase,
+	getLocale,
+	encode,
+	decode,
+	hashCode,
 }

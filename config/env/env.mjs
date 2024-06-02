@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url'
 import fs from 'fs'
 
 import ENV_DEFINE_LIST from '../../env/env-register.mjs'
-import ObjToEnvConverter from '../libs/object-to-env-converter.js'
+import ObjToEnvConverter from '../utils/ObjectToEnvConverter'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

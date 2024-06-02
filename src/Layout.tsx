@@ -2,7 +2,7 @@ import ErrorBoundary from 'utils/ErrorBoundary'
 import LoadingBoundary from 'utils/LoadingBoundary'
 import LoadingPageComponent from 'components/LoadingPageComponent'
 import ErrorLoadingPageComponent from 'components/ErrorPageComponent'
-import { useUserInfo } from 'context/UserInfoContext'
+import { useUserInfo } from 'store/UserInfoContext'
 
 const MainContainer = styled.div`
 	max-width: 1280px;
@@ -19,7 +19,6 @@ const Header = styled.header`
 `
 
 function Layout() {
-	const location = useLocation()
 	const route = useRoute()
 	const { userState, setUserState } = useUserInfo()
 
@@ -50,7 +49,7 @@ function Layout() {
 				</Header>
 				<ErrorBoundary fallback={<ErrorLoadingPageComponent />}>
 					<LoadingBoundary
-						key={location.pathname}
+						// key={location.pathname}
 						delay={150}
 						fallback={<LoadingPageComponent />}
 					>

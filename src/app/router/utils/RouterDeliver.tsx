@@ -1,11 +1,11 @@
-import type { Params } from 'react-router'
 import {
 	INavigateInfo,
 	IRouteInfo,
 	NavigateInfoContext,
 	RouteInfoContext,
 	useRouteInit,
-} from 'config/router/context/InfoContext'
+} from 'app/router/context/InfoContext'
+import type { Params } from 'react-router'
 
 let navigateInfo: INavigateInfo = {
 	from: undefined,
@@ -67,7 +67,7 @@ export default function RouterDeliver({ children }) {
 
 	navigateInfo = {
 		from:
-			!navigateInfo.to || navigateInfo.to.id !== routeInfo.id
+			navigateInfo.to && navigateInfo.to.fullPath !== routeInfo.fullPath
 				? navigateInfo.to
 				: navigateInfo.from,
 		to: routeInfo,

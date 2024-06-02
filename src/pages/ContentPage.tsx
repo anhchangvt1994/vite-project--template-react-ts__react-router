@@ -60,11 +60,7 @@ export default function ContentPage() {
 
 					<br />
 
-					<Link
-						to={generatePath('/:slugs/comment', {
-							slugs: route.params.slugs as string,
-						})}
-					>
+					<Link to={generatePath(import.meta.env.ROUTER_CONTENT_COMMENT_PATH)}>
 						{`> View Comment`}
 					</Link>
 
