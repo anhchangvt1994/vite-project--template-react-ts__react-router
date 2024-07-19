@@ -1,4 +1,4 @@
-import { useUserInfo } from 'store/UserInfoContext'
+import { useUserInfo } from 'app/store/UserInfoContext'
 import ImageItem, { Outer as ImageOuter } from 'components/ImageItem'
 
 const Page = styled.div``
@@ -43,7 +43,6 @@ export default function LoginPage() {
 
 	const onClickLogin = () => {
 		setUserState({ email: 'abc@gmail.com' })
-		route.handle.reProtect?.()
 	}
 
 	return (

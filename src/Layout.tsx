@@ -2,7 +2,7 @@ import ErrorBoundary from 'utils/ErrorBoundary'
 import LoadingBoundary from 'utils/LoadingBoundary'
 import LoadingPageComponent from 'components/LoadingPageComponent'
 import ErrorLoadingPageComponent from 'components/ErrorPageComponent'
-import { useUserInfo } from 'store/UserInfoContext'
+import { useUserInfo } from 'app/store/UserInfoContext'
 
 const MainContainer = styled.div`
 	max-width: 1280px;
@@ -24,7 +24,6 @@ function Layout() {
 
 	const onClickLogout = () => {
 		setUserState({ email: '' })
-		route.handle.reProtect?.()
 	}
 
 	return (

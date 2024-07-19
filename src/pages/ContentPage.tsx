@@ -41,6 +41,7 @@ const Page = styled.div``
 export default function ContentPage() {
 	// const { slugs, id } = useParamsAdvance()
 	const route = useRoute()
+	console.log('rerender ContentPage')
 
 	const data: {
 		title: string

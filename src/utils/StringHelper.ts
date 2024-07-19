@@ -514,7 +514,6 @@ export {
 	getCustomSlug,
 	generateTitleCase,
 	generateSentenceCase,
-	getLocale,
 	encode,
 	decode,
 	hashCode,

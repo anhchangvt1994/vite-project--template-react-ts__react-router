@@ -26,6 +26,7 @@ export default function ModuleContentSection({
 	caption: string
 	content: string
 }) {
+	console.log('rerendered ModuleContentSection')
 	return (
 		<Section>
 			<ImageItem src={src || ''} alt={caption} />
